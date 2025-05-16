@@ -16,10 +16,10 @@
     <a class="navbar-brand" href="#">Gestionnaire de tâches collaboratif</a>
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('projects.index') }}">Projets</a>
+            <a class="nav-link" href="{{ route('project.index') }}">Projets</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#scrollspyHeading2">Second</a>
+            <a href="{{ route('login') }}" class="nav-link">Connexion</a>
         </li>
     </ul>
 </nav>

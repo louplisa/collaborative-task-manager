@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model
@@ -28,18 +28,32 @@ class Project extends Model
         )->withPivot('role_id');
     }
 
-    public function owner()
+    public function owner(): ?User
     {
         $ownerRoleId = Role::where('name', 'owner')->value('id');
         return $this->users->firstWhere('pivot.role_id', $ownerRoleId);
     }
 
-    public function members()
+    /**
+     * @return Collection<User>
+     */
+    public function members(): ?Collection
     {
         $memberRoleId = Role::where('name', 'member')->value('id');
         return $this->users->filter(function ($user) use ($memberRoleId) {
             return $user->pivot->role_id == $memberRoleId;
         });
     }
+
+    public function hasRole(User $user, string $roleName): bool
+    {
+        $roleId = Role::where('name', $roleName)->value('id');
+
+        return $this->users()
+            ->wherePivot('role_id', $roleId)
+            ->where('users.id', $user->id)
+            ->exists();
+    }
+
 
 }
