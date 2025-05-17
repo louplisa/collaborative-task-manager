@@ -26,4 +26,9 @@ class Role extends Model
     {
         return static::where('name', $roleName)->value('id');
     }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_role', 'role_id', 'user_id');
+    }
 }

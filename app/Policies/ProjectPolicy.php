@@ -37,7 +37,9 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        return $project->hasRole($user, 'owner') || $project->hasRole($user, 'member');
+        return $project->hasRole($user, 'owner') ||
+            $project->hasRole($user, 'member') ||
+            $user->roles()->where('name', 'admin')->exists();
     }
 
     /**
@@ -49,7 +51,7 @@ class ProjectPolicy
             $project->users->where('pivot.role_id', Role::id(Role::OWNER))->first()
         )->id;
 
-        return $user->id === $ownerId;
+        return $user->id === $ownerId || $user->roles()->where('name', 'admin')->exists();
     }
 
     /**
