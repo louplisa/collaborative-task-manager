@@ -26,6 +26,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::get('/projects/{project}/edit', [\App\Http\Controllers\Admin\ProjectController::class, 'edit'])->name('project.edit');
     Route::put('/projects/{project}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])->name('project.update');
     Route::delete('/projects/{project}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])->name('project.destroy');
+
+//    Task routes
+    Route::resource('projects.task', \App\Http\Controllers\Admin\TaskController::class);
+
 });
 
 require __DIR__.'/auth.php';

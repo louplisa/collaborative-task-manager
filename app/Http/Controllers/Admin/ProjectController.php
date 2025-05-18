@@ -8,8 +8,6 @@ use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Closure;
 
 class ProjectController extends Controller
 {
@@ -125,6 +123,6 @@ class ProjectController extends Controller
     {
         $this->authorize('delete', $project);
         $project->delete();
-        return redirect()->route('admin.project.index')->with('success', 'Projet supprimé');
+        return redirect()->route('admin.project.index')->with('success', 'Projet supprimé avec succès');
     }
 }

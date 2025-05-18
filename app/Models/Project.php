@@ -18,6 +18,11 @@ class Project extends Model
         'updated_at',
     ];
 
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -54,6 +59,4 @@ class Project extends Model
             ->where('users.id', $user->id)
             ->exists();
     }
-
-
 }

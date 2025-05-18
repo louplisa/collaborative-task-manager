@@ -66,7 +66,15 @@
     @yield('content')
 </div>
 <script>
-    new TomSelect('select[multiple]', {plugins: {remove_button: {title: 'Supprimer'}}});
+    document.querySelectorAll('select[multiple]').forEach((el) => {
+        new TomSelect(el, {
+            plugins: {
+                remove_button: {
+                    title: 'Supprimer'
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>

@@ -9,44 +9,57 @@
           method="post" enctype="multipart/form-data">
         @csrf
         @method($project->exists ? 'put' : 'post')
-
         <div class="row">
             <div class="col vstack gap-2" style="flex: 100">
                 <div class="row">
-                    <label for="name">Nom</label>
-                    <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name"
-                           value="{{ $project->name }}">
-                    <label for="description">Description</label>
-                    <input class="form-control @error('description') is-invalid @enderror" type="text"
-                           name="description" id="description" value="{{ $project->description }}">
-                    <label for="owner">Propriétaire</label>
-                    <input type="text" class="form-control" value="{{ $project->exists ? $project->owner()?->name : Auth::user()->name }}" disabled>
-                    <input type="hidden" name="owner" value="{{ $project->exists ? $project->owner()?->id : Auth::id() }}" id="owner">
-                    <label for="users">Membres</label>
-                    @php
-                        $memberRoleId = \App\Models\Role::id(\App\Models\Role::MEMBER);
-                        $memberIds = $project->users
-                            ->filter(fn($u) => $u->pivot->role_id == $memberRoleId)
-                            ->pluck('id')
-                            ->toArray();
-                    @endphp
-                    <select name="users[]" id="users" class="form-control" multiple>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ in_array($user->id, $memberIds) ? 'selected' : '' }}>
-                                {{ $user->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @include('shared.input', [
+                        'class' => 'col',
+                        'label' => 'Nom',
+                        'name' => 'name',
+                        'value' => $project->name
+                    ])
+                    @include('shared.input', [
+                        'class' => 'col',
+                        'label' => 'Propriétaire',
+                        'name' => 'owner',
+                        'value' => $project->exists ? $project->owner()?->name : Auth::user()->name,
+                        'disabled' => true
+                    ])
+                    @include('shared.input', [
+                        'class' => 'col',
+                        'type' => 'hidden',
+                        'name' => 'owner',
+                        'value' => $project->exists ? $project->owner()?->id : Auth::id(),
+                        'disabled' => true
+                    ])
                 </div>
-                <div>
-                    <button class="btn btn-primary">
-                        @if('project->exists')
-                            Modifier
-                        @else
-                            Créer
-                        @endif
-                    </button>
+                <div class="row">
+                    @include('shared.input', [
+                        'class' => 'col',
+                        'type' => 'textarea',
+                        'label' => 'Description',
+                        'name' => 'description',
+                        'value' => $project->description
+                    ])
                 </div>
+                @include('shared.select', [
+                    'class' => 'col',
+                    'label' => 'Membres',
+                    'name' => 'users',
+                    'value' => $project->users()->pluck('users.id'),
+                    'options' => \App\Models\User::where('id', '!=', $project->owner()?->id)->pluck('name', 'id'),
+                    'multiple' => true
+                ])
+            </div>
+            @include('admin.tasks.index', [$tasks = $project->tasks()->get(), $project])
+            <div>
+                <button class="btn btn-primary">
+                    @if($project->exists)
+                        Modifier
+                    @else
+                        Créer
+                    @endif
+                </button>
             </div>
         </div>
     </form>
