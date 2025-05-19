@@ -27,7 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::put('/projects/{project}', [\App\Http\Controllers\Admin\ProjectController::class, 'update'])->name('project.update');
     Route::delete('/projects/{project}', [\App\Http\Controllers\Admin\ProjectController::class, 'destroy'])->name('project.destroy');
 
-//    Task routes
+//    TaskRequest routes
     Route::resource('projects.task', \App\Http\Controllers\Admin\TaskController::class);
 
 });

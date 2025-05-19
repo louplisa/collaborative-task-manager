@@ -4,20 +4,20 @@ namespace App\Enums;
 
 enum TaskStatus: string
 {
-    case Todo = 'todo';
-    case InProgress = 'in_progress';
-    case Done = 'done';
-    case Cancelled = 'cancelled';
-    case Blocked = 'blocked';
+    case TODO = 'todo';
+    case IN_PROGRESS = 'in_progress';
+    case DONE = 'done';
+    case CANCELLED = 'cancelled';
+    case BLOCKED = 'blocked';
 
     public static function labels(): array
     {
         return [
-            self::Todo->value => 'À faire',
-            self::InProgress->value => 'En cours',
-            self::Done->value => 'Terminé',
-            self::Cancelled->value => 'Annulé',
-            self::Blocked->value => 'Bloqué',
+            self::TODO->value => 'À faire',
+            self::IN_PROGRESS->value => 'En cours',
+            self::DONE->value => 'Terminé',
+            self::CANCELLED->value => 'Annulé',
+            self::BLOCKED->value => 'Bloqué',
         ];
     }
 }

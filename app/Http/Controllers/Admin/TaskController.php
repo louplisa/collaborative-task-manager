@@ -6,8 +6,7 @@ use App\Enums\TaskStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Task;
-use App\Models\User;
-use Closure;
+use App\Notifications\TaskRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -48,7 +47,7 @@ class TaskController extends Controller
             'project_id' => 'required|exists:projects,id'
         ]);
 
-        Task::create([
+        $task = Task::create([
             'title' => $validated['title'],
             'description' => $validated['description'] ?? null,
             'status' => $validated['status'],
@@ -56,7 +55,7 @@ class TaskController extends Controller
             'assignee_id' => $validated['assignee_id'] ?? null,
             'project_id' => $project->id,
         ]);
-
+        $task->user?->notify(new TaskRequest($task, $project, $validated, 'created'));
         return redirect()->route('admin.project.edit', $project)->with('success', 'Tâche créée avec succès.');
     }
 
@@ -105,6 +104,7 @@ class TaskController extends Controller
             'project_id' => $project->id,
         ]);
 
+        $task->user?->notify(new TaskRequest($task, $project, $validated, 'updated'));
         return redirect()->route('admin.project.edit', $project)->with('success', 'Tâche modifiée avec succès.');
     }
 

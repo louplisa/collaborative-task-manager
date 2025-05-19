@@ -51,7 +51,6 @@
                     'multiple' => true
                 ])
             </div>
-            @include('admin.tasks.index', [$tasks = $project->tasks()->get(), $project])
             <div>
                 <button class="btn btn-primary">
                     @if($project->exists)
@@ -61,6 +60,7 @@
                     @endif
                 </button>
             </div>
+            @include('admin.tasks.index', [$tasks = $project->tasks()->get(), $project])
         </div>
     </form>
 @endsection

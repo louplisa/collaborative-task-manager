@@ -20,6 +20,7 @@ class Task extends Model
 
     protected $casts = [
         'status' => TaskStatus::class,
+        'deadline' => 'datetime',
     ];
 
     public function project(): \Illuminate\Database\Eloquent\Relations\BelongsTo
