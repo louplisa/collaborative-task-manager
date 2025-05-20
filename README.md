@@ -26,6 +26,7 @@ A Laravel 12 web application for collaborative project and task management with 
 - MySQL or PostgreSQL
 - Bootstrap or Tailwind CSS
 - Native PHP Enums for statuses
+- Livewire V3
 
 ---
 
