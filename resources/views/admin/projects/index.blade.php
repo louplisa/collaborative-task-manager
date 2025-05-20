@@ -47,4 +47,5 @@
         @endforeach
         </tbody>
     </table>
+    {{ $projects->links() }}
 @endsection
