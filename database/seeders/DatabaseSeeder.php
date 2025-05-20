@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Project;
 use App\Models\Role;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -42,13 +43,14 @@ class DatabaseSeeder extends Seeder
 
         $roleOwner = Role::where('name', 'owner')->first();
         $roleMember = Role::where('name', 'member')->first();
+        $roleAdmin = Role::where('name', 'admin')->first();
 
-        User::factory()->create([
+        $adminUser = User::factory()->create([
             'name' => 'Aurélie Ferré',
             'email' => 'ferre.aurelie@wanadoo.fr',
             'password' => Hash::make('password'),
         ]);
-
+        $adminUser->roles()->attach($roleAdmin->id);
         $users = User::factory(50)->create();
 
         foreach ($users as $user) {
@@ -56,7 +58,12 @@ class DatabaseSeeder extends Seeder
             $project->users()->attach($user, ['role_id' => $roleOwner->id]);
 
             $memberUsers = $users->where('id', '!=', $user->id)->random(3);
-
+            Task::factory(10)->create([
+                'project_id' => $project->id,
+                'assignee_id' => function () use ($memberUsers) {
+                   return $memberUsers->pluck('id')->random();
+                   },
+            ]);
             foreach ($memberUsers as $member) {
                 $project->users()->attach($member->id, [
                     'role_id' => $roleMember->id,
