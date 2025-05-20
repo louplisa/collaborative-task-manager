@@ -19,14 +19,17 @@
                 all: unset;
             }
         }
-        .htmx-indicator{
-            display:none;
+
+        .htmx-indicator {
+            display: none;
         }
-        .htmx-request .htmx-indicator{
-            display:inline-block;
+
+        .htmx-request .htmx-indicator {
+            display: inline-block;
         }
-        .htmx-request.htmx-indicator{
-            display:inline-block;
+
+        .htmx-request.htmx-indicator {
+            display: inline-block;
         }
     </style>
 </head>
@@ -44,18 +47,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a @class(['nav-link', 'active' => str_contains($route, 'project.')]) href="{{ route('admin.project.index') }}">Gérer
-                        les projets</a>
+                    <a @class(['nav-link', 'active' => str_contains($route, 'project.')])
+                       href="{{ route('admin.project.index') }}">
+                        Gérer les projets
+                    </a>
                 </li>
             </ul>
             <div class="ms-auto">
                 @auth
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="post">
-                                @csrf
-                                <button class="nav-link">Se déconnecter</button>
-                            </form>
+                        <li class="nav-item dropdown">
+                           <a
+                               href="#"
+                               class="nav-link dropdown-toggle"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                           >{{ auth()->user()->name }}
+                           </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.profile.edit') }}">Profil</a></li>
+                                <li> <form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <button class="dropdown-item">Se déconnecter</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 @endauth
@@ -78,6 +95,7 @@
         });
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @livewireScripts
 </body>
 </html>
